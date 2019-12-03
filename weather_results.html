@@ -1,3 +1,43 @@
-<h1>Today's Forecast</h1>
 
-{{ string }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Weather</title>
+  <link rel='stylesheet' href="https://bootswatch.com/4/minty/bootstrap.min.css">
+</head>
+<style>
+    .card {
+      background-color: #5bb1cd;
+      color: white;
+    }
+</style>
+<body>
+
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <!-- Card -->
+    <div class="card weather-card">
+
+      <!-- Card content -->
+      <div class="card-body pb-3">
+
+        <!-- Title -->
+        <h4 class="card-title font-weight-bold">{{ results['name'] }}</h4>
+        <!-- Text -->
+        <p class="card-text">Mon, 12:30 PM, {{ results['weather'][0]['description'] }}</p>
+        <div class="d-flex justify-content-between">
+          <p class="display-1 degree">{{ temp }}</p>
+          <i class="fas fa-sun-o fa-5x pt-3 amber-text"></i>
+        </div>
+      
+
+      </div>
+
+    </div>
+    </div>
+  </div>
+
+</body> 
