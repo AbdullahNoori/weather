@@ -1,35 +1,46 @@
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
 import requests
+import pprint
 
 app = Flask(__name__)
-app.debug = True
+
+pp = pprint.PrettyPrinter(indent=4)
+weather_url = "http://api.openweathermap.org/data/2.5/weather?"
+
 
 @app.route("/")
-def search():
-    ''' Input city name '''
-    return render_template("search.html")
+def index():
+    return render_template("index.html")
 
-@app.route("/weather_results")
-def results():
-    city = request.args.get("city")
-    city_list = list(city)
+# @app.route("/weather")
+# def display_weather():
+#     return render_template("index.html")
 
-    for i in range(len(city_list)):
-        if city_list[i] == " ":
-            city_list[i] = "+"
+@app.route('/weather_results', methods=['GET', 'POST'])
+def weather_results_page():
+    city = request.args.get('city')
     
-    new_str = "".join(city_list)
-
-    url = f"http://api.openweathermap.org/data/2.5/weather?q={new_str}&appid=ae2660cbfb15ae919e944f013ed49449"
-    res = requests.get(url)
-    json = res.json()
-
-    weather = json["weather"][0]["main"]
-    string = f"There is {weather} right now in {city}!"
-    return render_template("results.html", string=string)
+    params = {
+        'q': city,
+        'APPID': "3ec502b7313be393c9317bda5ae20cc4"
+        }
 
 
+    r = requests.get(weather_url, params=params)
 
+    results = r.json()
+    tempK = results['main']['temp']
+    temp = kelvin_to_farenheit(tempK)
+
+    print(results)
+
+
+    return render_template('weather_results.html', results=results, temp=temp)
+
+def kelvin_to_farenheit(k):
+    results = 1.8 * (k-273) + 32
+    return int(results)
 
 if __name__ == '__main__':
     app.run()
+
